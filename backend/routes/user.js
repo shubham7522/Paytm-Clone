@@ -4,6 +4,7 @@ const { User, Account } = require("../db/db");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { authMiddleware } = require("../middleware/middleware");
+const mongoose = require("mongoose");
 
 const router = express.Router();
 router.use(express.json());
@@ -65,7 +66,7 @@ router.post("/signup", async (req, res) => {
         balance: 1 + Math.random() * 10000,
       });
 
-      const token = jwt.sign({ userId }, process.env.JWT_SECRET);
+      // const token = jwt.sign({ userId }, process.env.JWT_SECRET);
       res.json({
         msg: "User created successfully",
         token: token,
@@ -86,7 +87,7 @@ router.post("/signin", async (req, res) => {
     });
     if (existingUser) {
       const userId = existingUser._id;
-      const token = jwt.sign({ userId }, JWT_SECRET);
+      const token = jwt.sign({ userId }, process.env.JWT_SECRET);
       res.json({ token: token });
       return;
     } else {
@@ -107,11 +108,23 @@ router.put("/", authMiddleware, async (req, res) => {
 });
 
 router.get("/bulk", async (req, res) => {
-  const name = req.query.filter;
+  const name = req.query.filter || "";
+  const user = req.query.id.trim() || "";
+  const userId = new mongoose.Types.ObjectId(user);
 
   const users = await User.find({
-    $or: [{ firstName: { $regex: name } }, { lastName: { $regex: name } }],
+    $and: [
+      { _id: { $ne: userId } },
+      {
+        $or: [
+          { firstName: { $regex: name, $options: "i" } },
+          { lastName: { $regex: name, $options: "i" } },
+          { username: { $regex: name, $options: "i" } },
+        ],
+      },
+    ],
   });
+
   res.json({
     user: users.map((user) => ({
       username: user.username,
@@ -119,6 +132,22 @@ router.get("/bulk", async (req, res) => {
       lastName: user.lastName,
       _id: user._id,
     })),
+  });
+});
+
+router.get("/object", async (req, res) => {
+  const name = req.query.filter || "";
+  const userId = new mongoose.Types.ObjectId(name);
+
+  const users = await User.findById({ _id: userId });
+
+  res.json({
+    user: {
+      username: users.username,
+      firstName: users.firstName,
+      lastName: users.lastName,
+      id: users._id,
+    },
   });
 });
 
