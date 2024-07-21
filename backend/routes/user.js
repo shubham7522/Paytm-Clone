@@ -69,7 +69,6 @@ router.post("/signup", async (req, res) => {
       // const token = jwt.sign({ userId }, process.env.JWT_SECRET);
       res.json({
         msg: "User created successfully",
-        token: token,
       });
     }
   }
@@ -107,9 +106,9 @@ router.put("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/bulk", async (req, res) => {
+router.get("/bulkfilter", async (req, res) => {
   const name = req.query.filter || "";
-  const user = req.query.id.trim() || "";
+  const user = req.query.id || "";
   const userId = new mongoose.Types.ObjectId(user);
 
   const users = await User.find({
@@ -122,6 +121,26 @@ router.get("/bulk", async (req, res) => {
           { username: { $regex: name, $options: "i" } },
         ],
       },
+    ],
+  });
+
+  res.json({
+    user: users.map((user) => ({
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      _id: user._id,
+    })),
+  });
+});
+router.get("/bulk", async (req, res) => {
+  const name = req.query.filter || "";
+
+  const users = await User.find({
+    $or: [
+      { firstName: { $regex: name, $options: "i" } },
+      { lastName: { $regex: name, $options: "i" } },
+      { username: { $regex: name, $options: "i" } },
     ],
   });
 

@@ -14,7 +14,9 @@ const Users = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/v1/user/bulk?filter=${filter}&id=${id}`)
+      .get(
+        `http://localhost:3000/api/v1/user/bulkfilter?filter=${filter}&id=${id}`
+      )
       .then((response) => {
         setUsers(response.data.user);
       });
