@@ -8,6 +8,7 @@ import {
   SubHeading,
 } from "../components";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../urls";
 
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
@@ -54,7 +55,7 @@ const Signup = () => {
             <Button
               onClick={async () => {
                 const response = await axios.post(
-                  "https://paytm-clone-dedo.onrender.com/api/v1/user/signup",
+                  `${BASE_URL}/api/v1/user/signup`,
                   {
                     username: email,
                     firstName,

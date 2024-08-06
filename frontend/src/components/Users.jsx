@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Button from "./Button";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { BASE_URL } from "../urls";
 
 const Users = () => {
   // replace with backend call
@@ -14,9 +15,7 @@ const Users = () => {
 
   useEffect(() => {
     axios
-      .get(
-        `https://paytm-clone-dedo.onrender.com/api/v1/user/bulkfilter?filter=${filter}&id=${id}`
-      )
+      .get(`${BASE_URL}/api/v1/user/bulkfilter?filter=${filter}&id=${id}`)
       .then((response) => {
         setUsers(response.data.user);
       });

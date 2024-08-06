@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Button from "./Button";
+import { BASE_URL } from "../urls";
 
 const Appbar = () => {
   const [searchParams] = useSearchParams();
@@ -10,7 +11,7 @@ const Appbar = () => {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(`https://paytm-clone-dedo.onrender.com/api/v1/user/object?filter=${id}`)
+      .get(`${BASE_URL}/api/v1/user/object?filter=${id}`)
       .then((response) => {
         setUserFirstName(response.data.user.firstName);
       });

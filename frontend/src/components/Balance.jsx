@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { BASE_URL } from "../urls";
 
 const Balance = () => {
   const [userBalanse, setUserBalance] = useState();
 
   useEffect(() => {
     axios
-      .get("https://paytm-clone-dedo.onrender.com/api/v1/account/balance", {
+      .get(`${BASE_URL}/api/v1/account/balance`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

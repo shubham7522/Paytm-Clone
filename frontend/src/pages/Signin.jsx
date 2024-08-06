@@ -8,6 +8,7 @@ import {
 } from "../components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../urls";
 
 const Signin = () => {
   const [username, setUsername] = useState("");
@@ -18,7 +19,7 @@ const Signin = () => {
 
   useEffect(() => {
     axios
-      .get(`https://paytm-clone-dedo.onrender.com/api/v1/user/bulk?filter=${username}`)
+      .get(`${BASE_URL}/api/v1/user/bulk?filter=${username}`)
       .then((response) => {
         setUserId(response.data.user[0]._id);
         console.log(response.data.user[0]._id);
@@ -49,7 +50,7 @@ const Signin = () => {
             <Button
               onClick={async () => {
                 const response = await axios.post(
-                  "http://localhost:3000/api/v1/user/signin",
+                  `${BASE_URL}/api/v1/user/signin`,
                   {
                     username,
                     password,
