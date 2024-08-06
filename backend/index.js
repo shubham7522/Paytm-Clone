@@ -6,6 +6,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const PORT = process.env.PORT || 3000;
+
 app.use("/api/v1", rootRouter);
 
-app.listen(3000);
+app.listen(PORT, () => {
+  console.log(`Server is started at the port ${PORT}`);
+});
