@@ -18,7 +18,7 @@ const Signin = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/v1/user/bulk?filter=${username}`)
+      .get(`https://paytm-clone-dedo.onrender.com/api/v1/user/bulk?filter=${username}`)
       .then((response) => {
         setUserId(response.data.user[0]._id);
         console.log(response.data.user[0]._id);
