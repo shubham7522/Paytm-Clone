@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Button from "./Button";
 
 const Appbar = () => {
   const [searchParams] = useSearchParams();
   const [userfirstName, setUserFirstName] = useState("");
   const id = searchParams.get("id");
-  const objectId = `ObjectId('${id}')`;
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get(`https://paytm-clone-dedo.onrender.com/api/v1/user/object?filter=${id}`)
@@ -26,7 +26,13 @@ const Appbar = () => {
           <div className="flex flex-col justify-center h-full text-xl">{`${userfirstName[0]}`}</div>
         </div>
         <div className="flex flex-col justify-center h-full">
-          <Button color={"red"} buttonText={"Logout"} />
+          <Button
+            buttonText={"Logout"}
+            onClick={() => {
+              localStorage.removeItem("token");
+              navigate("/signin");
+            }}
+          />
         </div>
       </div>
     </div>
