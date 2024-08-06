@@ -15,7 +15,7 @@ const Users = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:3000/api/v1/user/bulkfilter?filter=${filter}&id=${id}`
+        `https://paytm-clone-dedo.onrender.com/api/v1/user/bulkfilter?filter=${filter}&id=${id}`
       )
       .then((response) => {
         setUsers(response.data.user);
