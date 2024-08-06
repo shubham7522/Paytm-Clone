@@ -10,7 +10,7 @@ const Appbar = () => {
   const objectId = `ObjectId('${id}')`;
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/v1/user/object?filter=${id}`)
+      .get(`https://paytm-clone-dedo.onrender.com/api/v1/user/object?filter=${id}`)
       .then((response) => {
         setUserFirstName(response.data.user.firstName);
       });
